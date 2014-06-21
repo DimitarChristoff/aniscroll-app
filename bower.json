@@ -5,7 +5,8 @@
     "bootstrap": "~3.1.1",
     "jquery": "~1.11.1",
     "primish": "0.3.7",
-    "animate.css": "~3.1.1"
+    "animate.css": "~3.1.1",
+    "requirejs": "~2.1.14"
   },
   "devDependencies": {}
 }
