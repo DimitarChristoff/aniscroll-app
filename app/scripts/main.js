@@ -1,1 +1,1 @@
-// new jQuery.Anime(jQuery('.container'));
+new jQuery.Anime(jQuery('.container'));

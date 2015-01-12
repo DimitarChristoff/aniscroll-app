@@ -14,10 +14,22 @@
 
 	var eventHandlers = {},
 		eventMap = {
-			scroll: 'scroll',
-			over: 'mouseenter',
-			out: 'mouseleave',
-			parallax: 'scroll'
+			scroll: {
+				base: 'scroll',
+				target: 'parent'
+			},
+			over: {
+				base: 'mouseenter',
+				target: 'self'
+			},
+			out: {
+				base: 'mouseleave',
+				target: 'self'
+			},
+			parallax: {
+				base: 'scroll',
+				target: 'parent'
+			}
 		};
 
 	/**
@@ -40,6 +52,7 @@
 		 */
 		constructor: function(element, options){
 			this.element = element;
+			this.parent = (options && options.parent) ? $(options.parent, delete options.parent) : document.body;
 			this.setOptions(options);
 			this.setupDom();
 		},
@@ -64,15 +77,13 @@
 				eventObj = {};
 				// set base array of events
 				this.options.supportedEvents.forEach(function(event){
-					eventObj[eventMap[event]] = [];
+					eventObj[eventMap[event].base] = [];
 				});
 			}
 
 			this.options.supportedEvents.forEach(function(event){
-				eventObj[eventMap[event]].push(this['on'+event]);
+				eventMap[event].target === 'self' && eventObj[eventMap[event].base].push(this['on'+event]);
 			}, this);
-
-			console.log(eventObj);
 
 			this.elements.each(function(){
 				var el = $(this),
@@ -90,8 +101,10 @@
 					return;
 				}
 
-				//el.on()
+				el.on(eventObj);
 			});
+
+
 		},
 
 		onscroll: function(){
@@ -99,11 +112,11 @@
 		},
 
 		onover: function(){
-
+			console.log('over');
 		},
 
 		onout: function(){
-
+			console.log('out');
 		},
 
 		onparallax: function(){
